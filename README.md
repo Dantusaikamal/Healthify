@@ -110,6 +110,10 @@ We have trained a machine learning model that is deployed in Firebase to make pr
 - Google Fit API
 - Mi Band 4 (Hardware)
 
+### Architecture:
+![Heart Stroke Prediction using Fitness trackers(1)](https://user-images.githubusercontent.com/65682028/235298648-91902b4e-a178-443f-8c9f-69817821b40c.png)
+
+
 # Usage
 [(Back to top)](#table-of-contents)
 
