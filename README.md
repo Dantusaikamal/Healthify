@@ -45,17 +45,30 @@ The application is divided into different modules:
  
 This module enables users to create their accounts and log in to the application securely. Users can also reset their passwords in case they forget them.
 
-### 2 Input Health Data: 
+### 2 Home Screen: 
 
-This module allows users to input their health data, such as age, sex, emergency_contacts. The application validates the input data and prompts users to correct any errors.
+In the Home Screen module, user will be able to view their vitals. They can also edit or add new records of their vitals and can also get timely health alerts.
+
+<p align="center">
+<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify Home screen.png" width="400">
+</p>
 
 ### 3. Predict Heart Stroke Risk: 
 
 This module analyzes the input health data using the machine learning model and generates a prediction of the user's risk of having a heart stroke. The prediction is displayed on the screen along with a color-coded risk indicator.
 
+<p align="center">
+<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify Navigation screen.png" width="400">
+</p>
+
+
 ### 4. SOS! (Emergency screen): 
 
 Whenever the heartrate of a user is extremely high or low, they will receive a notification / pop-up screen asking if they are experiencing a stroke. If they click NO, they will be redirected to the Home screen which displays their high heart rate. But if they press YES (They are experiencing a stroke) or if they fail to press any key within 10 seconds, they will be redirected to SOS screen that will send an sms alert to user's emergenct contacts that contains user's location and a message. An alert will also be sent to nearby hospitals. 
+
+<p align="center">
+<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify SOS Screen.png" width="400">
+</p>
 
 ### 5. View Previous Health Data: 
 
@@ -65,9 +78,13 @@ This module allows users to view their previous health data and predictions. Use
 
 This module enables users to use the application in their comfortable language.
 
-### 7. Settings: 
+### 7. Profile: 
 
 This module allows users to customize the application's settings, such as the language, notification preferences, and user profile. Users can also log out of the application from this module.
+
+<p align="center">
+<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Profile Screen Healthify.png" width="400">
+</p>
 
 ### 8. Contact Medical Professionals: 
 
