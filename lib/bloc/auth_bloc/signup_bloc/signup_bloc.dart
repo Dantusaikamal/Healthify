@@ -15,8 +15,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       try {
         Future.delayed(const Duration(seconds: 5));
-        await _apiService.registerUser(event.userModel.fullName,
-            event.userModel.email, event.userModel.password);
+        await _apiService.registerUser(event.userModel.fullName!,
+            event.userModel.email!, event.userModel.password!);
         emit(SignUpSuccess());
       } catch (err) {
         emit(SignUpFailure(errorMessage: err.toString()));

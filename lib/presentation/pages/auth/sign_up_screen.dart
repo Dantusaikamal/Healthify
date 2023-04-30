@@ -129,39 +129,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           _passwordCustomTextField(),
                           CustomTextButton(
                             onTap: () {
-                              final userModel = UserModel(
-                                fullName: _fullNameController.text,
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              );
+                              // final userModel = UserModel(
+                              //   fullName: _fullNameController.text,
+                              //   email: _emailController.text,
+                              //   password: _passwordController.text,
+                              // );
 
-                              if (userModel.email.isNotEmpty &&
-                                  userModel.fullName.isNotEmpty &&
-                                  userModel.password.isNotEmpty) {
-                                _signUpBloc.add(
-                                    SignUpButtonPressed(userModel: userModel));
+                              // if (userModel.email.isNotEmpty &&
+                              //     userModel.fullName.isNotEmpty &&
+                              //     userModel.password.isNotEmpty) {
+                              //   _signUpBloc.add(
+                              //       SignUpButtonPressed(userModel: userModel));
 
-                                if (state is SignUpFailure) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(state.errorMessage),
-                                      duration:
-                                          const Duration(milliseconds: 800),
-                                    ),
-                                  );
-                                } else {
-                                  // after user get authenticated navigate to next screen
-                                  Get.toNamed(AppRoutes.userDetailsScreen);
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text("Please enter all the fields"),
-                                    duration: Duration(milliseconds: 800),
-                                  ),
-                                );
-                              }
+                              //   if (state is SignUpFailure) {
+                              //     ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(
+                              //         content: Text(state.errorMessage),
+                              //         duration:
+                              //             const Duration(milliseconds: 800),
+                              //       ),
+                              //     );
+                              //   } else {
+                              //     // after user get authenticated navigate to next screen
+                              //     Get.toNamed(AppRoutes.userDetailsScreen);
+                              //   }
+                              // } else {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content:
+                              //           Text("Please enter all the fields"),
+                              //       duration: Duration(milliseconds: 800),
+                              //     ),
+                              //   );
+                              // }
                             },
                             label: "Sign Up",
                             labelColor: Colors.white,

@@ -1,13 +1,22 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc_event.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc_state.dart';
 import 'package:healthify/core/app_exports.dart';
+import 'package:healthify/models/user_model.dart';
 import 'package:healthify/routes/app_routes.dart';
+import 'package:healthify/service/ApiService.dart';
 import 'package:healthify/themes/app_decoration.dart';
 import 'package:healthify/themes/app_styles.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final apiService = ApiService();
+  final userModel = UserModel();
+
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,98 +24,161 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isAlertNotification = false;
+  late FetchUserDataBloc fetchUserDataBloc;
+
+  int heartRating = 82;
+  int exerciseRating = 14;
+  int walkingRating = 741;
+  int sleepRating = 45;
+
+  bool isRefreshed = false;
 
   @override
   void initState() {
     super.initState();
+    fetchUserDataBloc = FetchUserDataBloc();
+    fetchUserDataBloc.add(const GetUserData());
+  }
+
+  Widget _isLoading() {
+    return Container(
+      color: ColorConstant.whiteBackground,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: CircularProgressIndicator(
+          color: ColorConstant.bluedark,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstant.whiteBackground,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                left: 22,
-                right: 22,
-                top: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Hello,",
-                    style: AppStyle.txtPoppinsSemiBold28Light,
-                  ),
-                  Text(
-                    "Pavan",
-                    style: AppStyle.txtPoppinsBold28Dark,
-                  ),
-                  _dailyActivityNotification(
-                    isAlertNotification,
-                    "You haven’t been physically active today.",
-                  ),
-                  DailyActivityRating(
-                    timeLine: "3 days ago",
-                    onTapRefresh: () {},
-                    heartRating: 78,
-                    exerciseRating: 24,
-                    walkingRating: 10,
-                    sleepRating: 8,
-                  ),
-                  const ActivityStatus(),
-                  const SizedBox(
-                    height: 22,
-                  ),
-                  Text(
-                    "Health Corner",
-                    style: AppStyle.txtPoppinsSemiBold16DarkGray,
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    HealthCornerCard(
-                      onTap: () {
-                        Get.toNamed(
-                          AppRoutes.healthCornerScreen,
-                        );
-                      },
-                      imagePath: ImageConstant.imgHealthCorner2,
-                      description: "10 Tips for a Healthy heart",
+      body: _homeScreen(),
+    );
+  }
+
+  Widget _homeScreen() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: BlocProvider(
+        create: (_) => fetchUserDataBloc,
+        child: BlocBuilder<FetchUserDataBloc, FetchUserDataBlocState>(
+          builder: (context, state) {
+            if (state is FetchingDataLoading) {
+              return _isLoading();
+            } else if (state is FetchingDataSuccess) {
+              return _homeScreenContent(state.user);
+            } else if (state is FetchingDataFailure) {
+              return Container(
+                color: ColorConstant.bluedark,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: Text(
+                    state.errorMessage,
+                    style: TextStyle(
+                      color: ColorConstant.whiteText,
                     ),
-                    HealthCornerCard(
-                      onTap: () {},
-                      imagePath: ImageConstant.imgHealthCorner2,
-                      description: "10 Tips for a Healthy heart",
-                    ),
-                    HealthCornerCard(
-                      onTap: () {},
-                      imagePath: ImageConstant.imgHealthCorner2,
-                      description: "10 Tips for a Healthy heart",
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              );
+            } else {
+              return Container();
+            }
+          },
         ),
       ),
+    );
+  }
+
+  Widget _homeScreenContent(UserModel user) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+            left: 22,
+            right: 22,
+            top: 50,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "hello".tr,
+                style: AppStyle.txtPoppinsSemiBold28Light,
+              ),
+              Text(
+                "${user.fullName}",
+                style: AppStyle.txtPoppinsBold28Dark,
+              ),
+              _dailyActivityNotification(
+                isAlertNotification,
+                "You haven’t been physically active today.",
+              ),
+              DailyActivityRating(
+                timeLine: isRefreshed ? "Just now" : "5 mins ago",
+                onTapRefresh: () {
+                  setState(() {
+                    heartRating += 7;
+                    walkingRating += 40;
+                    isRefreshed = true;
+                  });
+                },
+                heartRating: heartRating,
+                exerciseRating: exerciseRating,
+                walkingRating: walkingRating,
+                sleepRating: sleepRating,
+              ),
+              const ActivityStatus(),
+              const SizedBox(
+                height: 22,
+              ),
+              Text(
+                "Health Corner",
+                style: AppStyle.txtPoppinsSemiBold16DarkGray,
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                HealthCornerCard(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.healthCornerScreen,
+                    );
+                  },
+                  imagePath: ImageConstant.imgHealthCorner2,
+                  description: "10 Tips for a Healthy heart",
+                ),
+                HealthCornerCard(
+                  onTap: () {},
+                  imagePath: ImageConstant.imgHealthCorner2,
+                  description: "10 Tips for a Healthy heart",
+                ),
+                HealthCornerCard(
+                  onTap: () {},
+                  imagePath: ImageConstant.imgHealthCorner2,
+                  description: "10 Tips for a Healthy heart",
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -250,7 +322,7 @@ class HealthCornerCard extends StatelessWidget {
   }
 }
 
-class DailyActivityRating extends StatelessWidget {
+class DailyActivityRating extends StatefulWidget {
   final String timeLine;
   final int heartRating, exerciseRating, walkingRating, sleepRating;
   final VoidCallback onTapRefresh;
@@ -265,6 +337,11 @@ class DailyActivityRating extends StatelessWidget {
       required this.sleepRating});
 
   @override
+  State<DailyActivityRating> createState() => _DailyActivityRatingState();
+}
+
+class _DailyActivityRatingState extends State<DailyActivityRating> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -272,11 +349,11 @@ class DailyActivityRating extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              timeLine,
+              widget.timeLine,
               style: AppStyle.txtPoppinsSemiBold16DarkGray,
             ),
             IconButton(
-              onPressed: onTapRefresh,
+              onPressed: widget.onTapRefresh,
               icon: Icon(
                 Icons.refresh_rounded,
                 color: ColorConstant.bluedark.withOpacity(0.8),
@@ -296,9 +373,9 @@ class DailyActivityRating extends StatelessWidget {
                 Icons.monitor_heart_outlined,
                 color: ColorConstant.lightRed,
               ),
-              title: "Heart Rate",
-              measure: "bpm",
-              rating: heartRating,
+              title: "heartRate".tr,
+              measure: "bpm".tr,
+              rating: widget.heartRating,
             ),
             RatingShowCaseCard(
               cardColor: ColorConstant.pupuleColor,
@@ -306,9 +383,9 @@ class DailyActivityRating extends StatelessWidget {
                 Icons.speed_outlined,
                 color: ColorConstant.pupuleColor,
               ),
-              title: "Exercise",
+              title: "exercise".tr,
               measure: "min",
-              rating: exerciseRating,
+              rating: widget.exerciseRating,
             )
           ],
         ),
@@ -324,9 +401,9 @@ class DailyActivityRating extends StatelessWidget {
                 Icons.flag_outlined,
                 color: ColorConstant.greenColor,
               ),
-              title: "Walking",
-              measure: "km",
-              rating: walkingRating,
+              title: "walking".tr,
+              measure: "steps",
+              rating: widget.walkingRating,
             ),
             RatingShowCaseCard(
               cardColor: ColorConstant.blueColor,
@@ -334,9 +411,9 @@ class DailyActivityRating extends StatelessWidget {
                 Icons.night_shelter_sharp,
                 color: ColorConstant.blueColor,
               ),
-              title: "Sleep",
-              measure: "hrs",
-              rating: sleepRating,
+              title: "sleep".tr,
+              measure: "mins",
+              rating: widget.sleepRating,
             )
           ],
         )
@@ -362,7 +439,7 @@ class RatingShowCaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * 0.4,
       decoration: BoxDecoration(
           color: cardColor.withOpacity(0.2),
@@ -415,7 +492,7 @@ class RatingShowCaseCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: 8.0, left: 4),
                 child: Text(
                   measure,
                   style: TextStyle(
@@ -444,7 +521,7 @@ class ActivityStatus extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Heart Rate",
+            "heartRate".tr,
             style: AppStyle.txtPoppinsSemiBold16DarkGray,
           ),
           const SizedBox(

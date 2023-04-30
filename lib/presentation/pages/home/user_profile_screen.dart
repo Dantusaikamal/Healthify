@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc_event.dart';
+import 'package:healthify/bloc/home/get_user_data/fetch_bloc_state.dart';
 import 'package:healthify/core/app_exports.dart';
 import 'package:healthify/core/constants/enums.dart';
 import 'package:healthify/core/helper_methods.dart';
+import 'package:healthify/helper/lang_controller.dart';
+import 'package:healthify/models/user_model.dart';
 import 'package:healthify/routes/app_routes.dart';
 import 'package:healthify/themes/app_decoration.dart';
 import 'package:healthify/themes/app_styles.dart';
+import 'package:translator/translator.dart';
+
+const List<String> list = <String>['English', 'Hindi', 'Telugu', 'Marathi'];
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -16,6 +25,15 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   bool isNotification = true;
+  late FetchUserDataBloc fetchUserDataBloc;
+  final translator = GoogleTranslator();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDataBloc = FetchUserDataBloc();
+    fetchUserDataBloc.add(const GetUserData());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +72,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           )
         ],
         title: Text(
-          "Profile",
+          "profile".tr,
           style: TextStyle(
             color: ColorConstant.bluedark,
             fontFamily: "Poppins",
@@ -67,157 +85,204 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 22),
           margin: const EdgeInsets.only(top: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: Row(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            ImageConstant.imgFemaleAvatar,
-                            width: 60,
-                            height: 60,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 22,
-                        ),
-                        const Text(
-                          "Pavan Kumar",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+          child: BlocProvider(
+            create: (_) => fetchUserDataBloc,
+            child: BlocBuilder<FetchUserDataBloc, FetchUserDataBlocState>(
+              builder: (context, state) {
+                if (state is FetchingDataSuccess) {
+                  return _profileContent(state.user);
+                }
+
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 1.2,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: ColorConstant.bluedark,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 4.5,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: ColorConstant.bluedark,
-                        borderRadius: BorderRadiusStyle.roundedBorder15,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Edit",
-                          style: TextStyle(
-                            color: ColorConstant.whiteText,
-                            fontFamily: "Poppins",
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileContent(UserModel userModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              child: Row(
+                children: [
+                  ClipOval(
+                    child: Image.asset(
+                      ImageConstant.imgMaleAvatar,
+                      width: 60,
+                      height: 60,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 22,
+                  ),
+                  Text(
+                    userModel.fullName!,
+                    style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                     ),
                   ),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _ratingCard(
-                      "180",
-                      "cm",
-                      "Height",
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: MediaQuery.of(context).size.width / 4.5,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: ColorConstant.bluedark,
+                  borderRadius: BorderRadiusStyle.roundedBorder15,
+                ),
+                child: Center(
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(
+                      color: ColorConstant.whiteText,
+                      fontFamily: "Poppins",
+                      fontSize: 15,
                     ),
-                    _ratingCard(
-                      "65",
-                      "kg",
-                      "Weight",
-                    ),
-                    _ratingCard(
-                      "22",
-                      "yo",
-                      "Age",
-                    ),
-                  ],
+                  ),
                 ),
               ),
-              AccountWidget(
-                onTapPersonalData: () {},
-                onTapEmergencyContact: () {},
-                onTapAcitvityHistory: () {},
-                onTapSetRemainder: () {},
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _ratingCard(
+                userModel.height.toString(),
+                "cm",
+                "height".tr,
               ),
-              const SizedBox(
-                height: 22,
+              _ratingCard(
+                userModel.weight.toString(),
+                "kg",
+                "weight".tr,
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                decoration:
-                    AppDecoration.boxShadowWithWhiteFillAndBorderRadius15,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Notification",
-                      style: AppStyle.txtPoppinsBold18Dark,
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              ImageConstant.iconOutlineNotification,
-                            ),
-                            const SizedBox(
-                              width: 22,
-                            ),
-                            Text(
-                              "Pop-up Notification",
-                              style: TextStyle(
-                                color: ColorConstant.bluedark.withOpacity(0.7),
-                                fontSize: 15.5,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ],
-                        ),
-                        Switch(
-                          activeColor: ColorConstant.bluedark,
-                          inactiveThumbColor:
-                              ColorConstant.bluedark.withOpacity(0.8),
-                          inactiveTrackColor:
-                              ColorConstant.bluedark.withOpacity(0.5),
-                          value: isNotification,
-                          onChanged: (val) {
-                            setState(() {
-                              isNotification = !isNotification;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              OtherWidget(
-                onTapContactUs: () {},
+              _ratingCard(
+                "22",
+                "yo",
+                "age".tr,
               ),
             ],
           ),
         ),
-      ),
+        AccountWidget(
+          onTapPersonalData: () {},
+          onTapEmergencyContact: () {},
+          onTapAcitvityHistory: () {},
+          onTapSetRemainder: () {},
+        ),
+        const SizedBox(
+          height: 22,
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          decoration: AppDecoration.boxShadowWithWhiteFillAndBorderRadius15,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Preferences",
+                style: AppStyle.txtPoppinsBold18Dark,
+              ),
+              const SizedBox(
+                height: 22,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageConstant.iconOutlineNotification,
+                      ),
+                      const SizedBox(
+                        width: 22,
+                      ),
+                      Text(
+                        "Pop-up Notification",
+                        style: TextStyle(
+                          color: ColorConstant.bluedark.withOpacity(0.7),
+                          fontSize: 15.5,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Switch(
+                    activeColor: ColorConstant.bluedark,
+                    inactiveThumbColor: ColorConstant.bluedark.withOpacity(0.8),
+                    inactiveTrackColor: ColorConstant.bluedark.withOpacity(0.5),
+                    value: isNotification,
+                    onChanged: (val) {
+                      setState(() {
+                        isNotification = !isNotification;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        child: Image.asset(
+                          ImageConstant.iconLanguage,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        "languages".tr,
+                        style: TextStyle(
+                          color: ColorConstant.bluedark.withOpacity(0.7),
+                          fontSize: 15.5,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ],
+                  ),
+                  const CustomDropdownButton(),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 22,
+        ),
+        OtherWidget(
+          onTapContactUs: () {},
+        ),
+      ],
     );
   }
 
@@ -250,6 +315,65 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 }
 
+class CustomDropdownButton extends StatefulWidget {
+  const CustomDropdownButton({super.key});
+
+  @override
+  State<CustomDropdownButton> createState() => _CustomDropdownButtonState();
+}
+
+class _CustomDropdownButtonState extends State<CustomDropdownButton> {
+  String dropdownValue = list.first;
+  LangController langController = Get.put(LangController());
+
+  updateLocale(Locale locale, BuildContext context) {
+    Get.updateLocale(locale);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_drop_down),
+      elevation: 16,
+      style: TextStyle(color: ColorConstant.bluedark),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+
+        if (value == "English") {
+          updateLocale(const Locale("en", "US"), context);
+          langController.setLanguagecode("en");
+        } else if (value == "Hindi") {
+          updateLocale(const Locale("hi", "IN"), context);
+          langController.setLanguagecode("hi");
+        } else if (value == "Telugu") {
+          updateLocale(const Locale("te", "IN"), context);
+          langController.setLanguagecode("te");
+        } else if (value == "Marathi") {
+          updateLocale(const Locale("mr", "IN"), context);
+          langController.setLanguagecode("mr");
+        }
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontSize: 15.5,
+              color: ColorConstant.bluedark.withOpacity(0.7),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
 class OtherWidget extends StatelessWidget {
   final VoidCallback onTapContactUs;
   const OtherWidget({super.key, required this.onTapContactUs});
@@ -263,7 +387,7 @@ class OtherWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Other",
+            "other".tr,
             style: AppStyle.txtPoppinsBold18Dark,
           ),
           const SizedBox(
@@ -273,14 +397,14 @@ class OtherWidget extends StatelessWidget {
             leadingIcon: const Icon(
               Icons.email_outlined,
             ),
-            title: "Contact Us",
+            title: "contactUs".tr,
             onTap: onTapContactUs,
           ),
           ItemCardWidget(
             leadingIcon: const Icon(
               Icons.policy_outlined,
             ),
-            title: "Privacy Policy",
+            title: "privacy".tr,
             onTap: onTapContactUs,
           ),
         ],
@@ -310,7 +434,7 @@ class AccountWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Account",
+            "account".tr,
             style: AppStyle.txtPoppinsBold18Dark,
           ),
           const SizedBox(
@@ -320,28 +444,28 @@ class AccountWidget extends StatelessWidget {
             leadingIcon: const Icon(
               Icons.person_outline_outlined,
             ),
-            title: "Personal Data",
+            title: "data".tr,
             onTap: onTapPersonalData,
           ),
           ItemCardWidget(
             leadingIcon: Image.asset(
               ImageConstant.iconContact,
             ),
-            title: "Emergency Contact",
+            title: "contacts".tr,
             onTap: onTapEmergencyContact,
           ),
           ItemCardWidget(
             leadingIcon: Image.asset(
               ImageConstant.iconPieChart,
             ),
-            title: "Activity History",
+            title: "history".tr,
             onTap: onTapAcitvityHistory,
           ),
           ItemCardWidget(
             leadingIcon: Image.asset(
               ImageConstant.iconOutlineNotification,
             ),
-            title: "Set Remainder",
+            title: "remainders".tr,
             onTap: onTapSetRemainder,
           ),
         ],

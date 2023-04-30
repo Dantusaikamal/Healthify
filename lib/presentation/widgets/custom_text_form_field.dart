@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool isObscureText;
   final EdgeInsetsGeometry? margin;
   final VoidCallback? onTap;
+  final dynamic onChanged;
 
   const CustomTextFormField({
     super.key,
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
     this.isObscureText = false,
     this.margin,
     this.onTap,
+    this.onChanged,
   });
 
   @override
@@ -43,6 +45,7 @@ class CustomTextFormField extends StatelessWidget {
       margin: margin,
       decoration: AppDecoration.boxShadowWithWhiteFillAndBorderRadius15,
       child: TextFormField(
+        onChanged: onChanged,
         onTap: onTap,
         keyboardType: keyboardType,
         obscureText: isObscureText,

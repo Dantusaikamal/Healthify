@@ -1,20 +1,31 @@
-import 'package:equatable/equatable.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
-abstract class SignInBlocState extends Equatable {
-  const SignInBlocState();
+import 'package:healthify/bloc/auth_bloc/form_submission_status.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class SignInInitial extends SignInBlocState {}
-
-class SignInLoading extends SignInBlocState {}
-
-class SignInSuccess extends SignInBlocState {}
-
-class SignInFailure extends SignInBlocState {
+class SignInBlocState {
+  final String email;
+  final String password;
+  final FormSubmissionStatus formStatus;
   final String errorMessage;
 
-  const SignInFailure({required this.errorMessage});
+  const SignInBlocState({
+    this.email = '',
+    this.password = "",
+    this.formStatus = const InitialFormStatus(),
+    this.errorMessage = "",
+  });
+
+  SignInBlocState copyWith({
+    String? email,
+    String? password,
+    FormSubmissionStatus? formStatus,
+    String? errorMessage,
+  }) {
+    return SignInBlocState(
+      email: email ?? this.email,
+      password: password ?? this.password,
+      formStatus: formStatus ?? this.formStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

@@ -36,12 +36,16 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_dotenv: ^5.0.2
+  geolocator: ^9.0.2
   get: ^4.6.5
   hive: ^2.2.3
   http: ^0.13.5
   liquid_swipe: ^3.0.0
   shared_preferences: ^2.0.18
   syncfusion_flutter_charts: ^20.4.53
+  translator: ^0.1.7
+  twilio_flutter: ^0.0.9
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -60,7 +64,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/notification_images/
     - assets/images/navigation_bar_images/
+    - .env
+    - assets/model.tflite
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

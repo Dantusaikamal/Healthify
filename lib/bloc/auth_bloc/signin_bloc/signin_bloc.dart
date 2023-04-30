@@ -1,27 +1,40 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../service/ApiService.dart';
+import 'package:healthify/bloc/auth_bloc/form_submission_status.dart';
+import 'package:healthify/repository/auth_repo/auth_repository.dart';
+
 import 'signin_bloc_event.dart';
 import 'signin_bloc_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInBlocState> {
-  final ApiService _apiService;
+  final AuthRepository authRepo;
 
-  SignInBloc({required ApiService apiService})
-      : _apiService = apiService,
-        super(SignInInitial()) {
-    on<SignInButtonPressed>((event, emit) async {
-      emit(SignInLoading());
+  SignInBloc({
+    required this.authRepo,
+  }) : super(const SignInBlocState()) {
+    on<SignInEmail>(
+      (event, emit) => {
+        emit(state.copyWith(email: event.email)),
+      },
+    );
 
-      try {
-        Future.delayed(const Duration(seconds: 5));
-        await _apiService.loginUser(
-            event.userModel.email, event.userModel.password);
+    on<SignInPassword>(
+      (event, emit) => {
+        emit(state.copyWith(password: event.password)),
+      },
+    );
 
-        emit(SignInSuccess());
-      } catch (err) {
-        emit(SignInFailure(errorMessage: err.toString()));
-      }
-    });
+    on<SignInSubmitted>(
+      (event, emit) async {
+        emit(state.copyWith(formStatus: FormSubmitting()));
+
+        await authRepo.signInUser(state.email, state.password);
+
+        await Future.delayed(const Duration(seconds: 5), () {
+          emit(state.copyWith(formStatus: SubmissionSuccess()));
+        });
+      },
+    );
   }
 }

@@ -11,7 +11,28 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class NotificationScreenState extends State<NotificationScreen> {
-  List<dynamic> notificationItems = [];
+  List<dynamic> notificationItems = [
+    {
+      "title": "You haven't moved since two hours",
+      "subtitle": "About 6 hours ago",
+      "image": ImageConstant.imgExercise,
+    },
+    {
+      "title": "You haven't moved since two hours",
+      "subtitle": "About 13 hours ago",
+      "image": ImageConstant.imgExercise,
+    },
+    {
+      "title": "High Heart rate - 140 BPM!",
+      "subtitle": "1 day ago",
+      "image": ImageConstant.imgHightHeartRate,
+    },
+    {
+      "title": "Your daily remainder to work out",
+      "subtitle": "1 day ago",
+      "image": ImageConstant.imgExercise,
+    },
+  ];
 
   @override
   void initState() {
@@ -46,7 +67,7 @@ class NotificationScreenState extends State<NotificationScreen> {
         backgroundColor: ColorConstant.whiteBackground,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 22),
+        padding: const EdgeInsets.only(left: 10.0, right: 12.0, top: 22),
         child: notificationItems.isNotEmpty
             ? ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -74,13 +95,14 @@ class NotificationScreenState extends State<NotificationScreen> {
                               AppStyle.txtPoppinsWithDefaultSizeLightGrayW500,
                         ),
                         leading: Container(
-                          height: 40,
-                          width: 40,
+                          height: 60,
+                          width: 60,
                           decoration: BoxDecoration(
-                            color: ColorConstant.lightGray,
+                            color: ColorConstant.whiteBackground,
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          // child: Image.asset(ImageConstant.iconNotificationDark),
+                          child: Image.asset(
+                              notificationItems[index]['image'].toString()),
                         ),
                       ),
                     );

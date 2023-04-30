@@ -1,18 +1,17 @@
-import 'package:equatable/equatable.dart';
-import 'package:healthify/models/user_model.dart';
-
-abstract class SignInEvent extends Equatable {
+abstract class SignInEvent {
   const SignInEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
-class SignInButtonPressed extends SignInEvent {
-  final UserModel userModel;
+class SignInEmail extends SignInEvent {
+  final String email;
 
-  const SignInButtonPressed({required this.userModel});
-
-  @override
-  List<Object> get props => [userModel];
+  const SignInEmail({required this.email});
 }
+
+class SignInPassword extends SignInEvent {
+  final String password;
+
+  const SignInPassword({required this.password});
+}
+
+class SignInSubmitted extends SignInEvent {}

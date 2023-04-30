@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:healthify/bloc/auth_bloc/signin_bloc/signin_bloc_state.dart';
 
 import '../../core/utils/color_constants.dart';
 import '../../themes/app_decoration.dart';

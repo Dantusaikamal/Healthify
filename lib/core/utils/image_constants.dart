@@ -46,4 +46,13 @@ class ImageConstant {
   static String imgBannerDots = "assets/images/banner_dots.png";
 
   static String imgSleeping = "assets/images/sleeping_img.png";
+
+  static String imgHightHeartRate =
+      "assets/images/notification_images/high-heart-rate.png";
+
+  static String imgLowHeartRate =
+      "assets/images/notification_images/low-heart-rate.png";
+
+  static String imgExercise = "assets/images/notification_images/exercise.png";
+  static String iconLanguage = "assets/images/language.png";
 }

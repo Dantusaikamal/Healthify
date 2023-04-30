@@ -3,6 +3,7 @@ import 'package:healthify/presentation/pages/auth/user_details_screen.dart';
 import 'package:healthify/presentation/pages/home/health_corner_screen.dart';
 import 'package:healthify/presentation/pages/home/home.dart';
 import 'package:healthify/presentation/pages/home/stroke_emergency_screen.dart';
+
 import '../presentation/pages/auth/sign_in_screen.dart';
 import '../presentation/pages/auth/sign_up_screen.dart';
 import '../presentation/pages/onboarding/onboading.dart';

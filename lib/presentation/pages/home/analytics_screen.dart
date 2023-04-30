@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:healthify/core/app_exports.dart';
 import 'package:healthify/themes/app_decoration.dart';
 import 'package:healthify/themes/app_styles.dart';
@@ -45,7 +46,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               const SizedBox(
                 height: 22,
               ),
-              sleepingTimeWidget("8h 25m"),
+              sleepingTimeWidget("45 mins"),
               const ActivityProgressChart(),
             ],
           ),
@@ -70,7 +71,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Sleep",
+                "sleep".tr,
                 style: AppStyle.txtPoppinsBold18Dark,
               ),
               const SizedBox(
@@ -464,7 +465,7 @@ class BMIWidgetChart extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                "You have a normal weight",
+                "You are under weight.",
                 style: TextStyle(
                   color: ColorConstant.whiteText,
                   fontFamily: "Poppins",
