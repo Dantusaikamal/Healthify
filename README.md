@@ -1,17 +1,17 @@
 
 <p align="center">
 
-<img src= "https://github.com/Dantusaikamal/HealthifyxHackSolstice/blob/main/assets/images/healthify-logo-light.png" width="150px" />
+<img src= "https://github.com/Dantusaikamal/Healthify/blob/main/assets/images/healthify-logo-light.png" width="150px" />
 
 </p>
 
-<p align="center"> Healthify x HackSolstice - Heart Stroke Prediction using Machine Learning and Fitness trackers </p>
+<p align="center"> Healthify - Heart Stroke Prediction using Machine Learning and Fitness trackers </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/Dantusaikamal/HealthifyxHackSolstice?include_prereleases">
-  <img src="https://img.shields.io/github/last-commit/Dantusaikamal/HealthifyxHackSolstice">
-  <img src="https://img.shields.io/github/issues-raw/Dantusaikamal/HealthifyxHackSolstice">
-  <img src="https://img.shields.io/github/issues-pr/Dantusaikamal/HealthifyxHackSolstice">
+  <img src="https://img.shields.io/github/v/release/Dantusaikamal/Healthify?include_prereleases">
+  <img src="https://img.shields.io/github/last-commit/Dantusaikamal/Healthify">
+  <img src="https://img.shields.io/github/issues-raw/Dantusaikamal/Healthify">
+  <img src="https://img.shields.io/github/issues-pr/Dantusaikamal/Healthify">
   <img src="https://img.shields.io/badge/License-MIT-green.svg">
 </p>
 
@@ -50,7 +50,7 @@ This module enables users to create their accounts and log in to the application
 In the Home Screen module, user will be able to view their vitals. They can also edit or add new records of their vitals and can also get timely health alerts.
 
 <p align="center">
-<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify Home screen.png" width="400">
+<img src= "https://github.com/Dantusaikamal/Healthify/blob/main/assets/images/Healthify Home screen.png" width="400">
 </p>
 
 ### 3. Predict Heart Stroke Risk: 
@@ -58,7 +58,7 @@ In the Home Screen module, user will be able to view their vitals. They can also
 This module analyzes the input health data using the machine learning model and generates a prediction of the user's risk of having a heart stroke. The prediction is displayed on the screen along with a color-coded risk indicator.
 
 <p align="center">
-<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify Navigation screen.png" width="400">
+<img src= "https://github.com/Dantusaikamal/Healthify/blob/main/assets/images/Healthify Navigation screen.png" width="400">
 </p>
 
 
@@ -67,7 +67,7 @@ This module analyzes the input health data using the machine learning model and 
 Whenever the heartrate of a user is extremely high or low, they will receive a notification / pop-up screen asking if they are experiencing a stroke. If they click NO, they will be redirected to the Home screen which displays their high heart rate. But if they press YES (They are experiencing a stroke) or if they fail to press any key within 10 seconds, they will be redirected to SOS screen that will send an sms alert to user's emergenct contacts that contains user's location and a message. An alert will also be sent to nearby hospitals. 
 
 <p align="center">
-<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Healthify SOS Screen.png" width="400">
+<img src= "https://github.com/Dantusaikamal/Healthify/blob/main/assets/images/Healthify SOS Screen.png" width="400">
 </p>
 
 ### 5. View Previous Health Data: 
@@ -83,7 +83,7 @@ This module enables users to use the application in their comfortable language.
 This module allows users to customize the application's settings, such as the language, notification preferences, and user profile. Users can also log out of the application from this module.
 
 <p align="center">
-<img src= "https://github.com/Dantusaikamal/HealthifyxHacksolstice/blob/main/assets/images/Profile Screen Healthify.png" width="400">
+<img src= "https://github.com/Dantusaikamal/Healthify/blob/main/assets/images/Profile Screen Healthify.png" width="400">
 </p>
 
 ### 8. Contact Medical Professionals: 
@@ -153,7 +153,7 @@ Set the environment variables if necessary
 
 1. Clone the repo
 ```sh
-git clone https://github.com/Dantusaikamal/HealthifyxHackSolstice.git
+git clone https://github.com/Dantusaikamal/Healthify.git
 ```
 2. Install Flutter packages
 ```sh
