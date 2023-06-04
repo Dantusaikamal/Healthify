@@ -96,8 +96,9 @@ This module provides users with helpful tips on how to maintain a healthy lifest
 
 # Demo-Preview
 
-https://user-images.githubusercontent.com/65682028/227759473-7e617754-ecd2-4fd8-acdd-c84c24b65cab.mp4
 
+
+https://github.com/Dantusaikamal/Healthify/assets/65682028/23bae4ce-81ea-4a5f-8dbe-65838268cfea
 
 
 
