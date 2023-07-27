@@ -38,7 +38,6 @@ In this project, a machine learning model is deployed in an Amazon SageMaker ins
 
 We aim to provide early detection and alerts for users who may be at risk of having a stroke. By providing timely alerts, users can seek emergency treatment quickly, which increases the chances of survival and recovery from a stroke.
 
-
 The application is divided into different modules:
 
 ### 1. User Registration and Login: 
